@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.IntakeConstants.*;
 
 public class Intake extends SubsystemBase {
-    private final TalonSRX intakeFront = TalonSRX(INTAKE_FRONT);
-    private final TalonSRX intakeBack = TalonSRX(INTAKE_BACK);
+    private final TalonSRX intakeFront = new TalonSRX(INTAKE_FRONT);
+    private final TalonSRX intakeBack = new TalonSRX(INTAKE_BACK);
   /** Creates a new Intake. */
   public Intake() {
   }
@@ -30,8 +30,8 @@ public class Intake extends SubsystemBase {
     move(-1);
   }
   public void move(int direction){
-    intakeFront.set(1.0 * -direction);
-    intakeBack.set(1.0 * direction);
+    intakeFront.set(null, 1.0);
+    intakeBack.set(null, 1.0);
   }
   public void toggle(){
    
