@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
@@ -11,8 +12,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.IntakeConstants.*;
 
 public class Intake extends SubsystemBase {
-    private final TalonFX intakeFront = TalonFX(INTAKE_FRONT);
-    private final TalonFX intakeBack = TalonFX(INTAKE_BACK);
+    private final TalonSRX intakeFront = TalonSRX(INTAKE_FRONT);
+    private final TalonSRX intakeBack = TalonSRX(INTAKE_BACK);
   /** Creates a new Intake. */
   public Intake() {
   }

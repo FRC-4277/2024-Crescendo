@@ -1,16 +1,13 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.commands;
 
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.Intake;
 
-
-public class Autos extends Command {
-  /** Creates a new Autos. */
-  public Autos() {
+public class IntakeIn extends Command {
+  private Intake intake;
+  /** Creates a new IntakeIn. */
+  public IntakeIn(Intake intake) {
+    this.intake = intake;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -20,11 +17,15 @@ public class Autos extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    intake.in();
+  }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    intake.stop();
+  }
 
   // Returns true when the command should end.
   @Override
