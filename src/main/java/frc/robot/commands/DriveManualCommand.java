@@ -6,10 +6,10 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveTrain;
 
-public class DriveManualCommand extends SubsystemBase {
+public class DriveManualCommand extends Command {
   /** Creates a new DriveManualCommand. */
    private final DriveTrain driveTrain;
    private final XboxController controller;
@@ -19,6 +19,7 @@ public class DriveManualCommand extends SubsystemBase {
     this.driveTrain = driveTrain;
     this.joystick = joystick;
     this.controller = controller;
+    addRequirements(driveTrain);
   }
   
   public void execute() {
@@ -28,8 +29,6 @@ public class DriveManualCommand extends SubsystemBase {
   
   public void end(boolean interrupted) {}
 
-  // Returns true when the command should end.
-  public boolean isFinished() {
-    return false;
-  }
+  // Note we do not want the isFinished since this is our default command it causes the not updated enough error
+
 }

@@ -8,13 +8,13 @@ import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import static frc.robot.Constants.IntakeConstants.*;
+import static frc.robot.Constants.ShooterConstants.*;
 
-public class Intake extends SubsystemBase {
-    private final TalonSRX intakeFront = new TalonSRX(INTAKE_FRONT);
-    private final TalonSRX intakeBack = new TalonSRX(INTAKE_BACK);
-  /** Creates a new Intake. */
-  public Intake() {
+public class Shooter extends SubsystemBase {
+    private final TalonSRX shooterTop = new TalonSRX(SHOOTER_TOP);
+    private final TalonSRX shooterBottom = new TalonSRX(SHOOTER_BOTTOM);
+  /** Creates a new Shooter. */
+  public Shooter() {
   }
 
   @Override
@@ -29,14 +29,14 @@ public class Intake extends SubsystemBase {
     move(1);
   }
   public void move(int direction){
-    intakeFront.set(TalonSRXControlMode.PercentOutput, direction * -INTAKE_SPEED);
-    intakeBack.set(TalonSRXControlMode.PercentOutput, direction * INTAKE_SPEED);
+    shooterTop.set(TalonSRXControlMode.PercentOutput, direction * SHOOTER_SPEED);
+    shooterBottom.set(TalonSRXControlMode.PercentOutput, direction * SHOOTER_SPEED);
   }
   public void toggle(){
    
   }
   public void stop(){ 
-    intakeFront.set(TalonSRXControlMode.PercentOutput, 0);
-    intakeBack.set(TalonSRXControlMode.PercentOutput, 0);
+    shooterTop.set(TalonSRXControlMode.PercentOutput, 0);
+    shooterBottom.set(TalonSRXControlMode.PercentOutput, 0);
   };
 }

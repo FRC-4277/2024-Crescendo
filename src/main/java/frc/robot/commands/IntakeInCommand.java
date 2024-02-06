@@ -3,13 +3,15 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 
-public class IntakeIn extends Command {
+public class IntakeInCommand extends Command {
   private Intake intake;
   /** Creates a new IntakeIn. */
-  public IntakeIn(Intake intake) {
+  public IntakeInCommand(Intake intake) {
     this.intake = intake;
-    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(intake);
   }
+    // Use addRequirements() here to declare subsystem dependencies.
+  
 
   // Called when the command is initially scheduled.
   @Override

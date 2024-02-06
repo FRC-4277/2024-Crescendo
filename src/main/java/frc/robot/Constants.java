@@ -29,9 +29,16 @@ public final class Constants {
     public static class IntakeConstants {
       public static final int INTAKE_BACK = 21;
       public static final int INTAKE_FRONT = 30;
+      public static final double INTAKE_SPEED = 0.65; 
       
     }
-
+    public static class ShooterConstants {
+      public static final int SHOOTER_BOTTOM = 21;
+      public static final int SHOOTER_TOP = 30;
+      public static final double SHOOTER_SPEED = 0.65; 
+        
+      }
+    
     public static class ShuffleboardConstants {
       public static final String AUTO_TAB = "Autonomous";
     }
