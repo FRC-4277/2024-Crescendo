@@ -23,7 +23,7 @@ public class DriveManualCommand extends Command {
   }
   
   public void execute() {
-      driveTrain.driveJoystick(joystick);
+      driveTrain.driveJoystick(joystick.getRawAxis(0), joystick.getRawAxis(1), joystick.getRawAxis(2));
   }
   // Called once the command ends or is interrupted.
   
