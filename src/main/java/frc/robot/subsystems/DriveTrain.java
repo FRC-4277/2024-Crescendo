@@ -41,7 +41,7 @@ public class DriveTrain extends SubsystemBase {
     leftBack.setInverted(false);
     leftFront.setInverted(false);
 
-    driveTrain.setDeadband(0.6);
+    driveTrain.setDeadband(0.1);
 
   }
 
@@ -76,14 +76,14 @@ public class DriveTrain extends SubsystemBase {
     // speedLimiter.calculate(joystick.getY()));
     // driveTrain.driveCartesian( signedPow (joystick.getX(), 2) ,
     // signedPow(joystick.getY(), 2), signedPow(joystick.getZ(), 2)*.5);
-    driveTrain.driveCartesian(joystick.getX(), joystick.getY(), joystick.getZ());
+   // driveTrain.driveCartesian(joystick.getX(), joystick.getY(), joystick.getZ());
 
     // option 2:
-    // driveTrain.driveCartesian(joystick.getX() * 0.5, joystick.getY() * 0.5, joystick.getZ() * 0.5);
+  //driveTrain.driveCartesian(joystick.getX() * 0.5, joystick.getY() * 0.5, joystick.getZ() * 0.5);
 
     // option 3:
-    // driveTrain.driveCartesian(getSignedPow(joystick.getX(), 3), getSignedPow(joystick.getY(), 3), getSignedPow(joystick.getZ(), 3));
-
+    //driveTrain.driveCartesian(getSignedPow(joystick.getX(), 3), getSignedPow(joystick.getY(), 3), getSignedPow(joystick.getZ(), 3));
+driveTrain.driveCartesian(getSignedPow(-joystick.getY(), 3), getSignedPow(joystick.getX(), 3), getSignedPow(joystick.getZ(), 3));
     //option 1:
     // driveTrain.driveCartesian(joystick.getX(), joystick.getY(), joystick.getZ());
 
