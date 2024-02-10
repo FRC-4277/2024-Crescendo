@@ -51,7 +51,7 @@ public class DriveTrain extends SubsystemBase {
     // speedLimiter.calculate(joystick.getY()));
     // driveTrain.driveCartesian( signedPow (joystick.getX(), 2) ,
     // signedPow(joystick.getY(), 2), signedPow(joystick.getZ(), 2)*.5);
-    driveTrain.driveCartesian(x, y, x);
+    driveTrain.driveCartesian(x, y, z);
 
     // option 2:
     // driveTrain.driveCartesian(x * 0.5, y * 0.5, z * 0.5);

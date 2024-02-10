@@ -33,11 +33,16 @@ public final class Constants {
       
     }
     public static class ShooterConstants {
-      public static final int SHOOTER_BOTTOM = 21;
-      public static final int SHOOTER_TOP = 30;
-      public static final double SHOOTER_SPEED = 0.65; 
+      public static final int SHOOTER_BOTTOM = 23;
+      public static final int SHOOTER_TOP = 31;
+      public static final double SHOOTER_SPEED = 0.55;
         
       }
+
+    public static class ClimberConstants {
+      public static final int LEFT_CLIMBER = 61;
+      public static final int RIGHT_CLIMBER = 22;
+    }
     
     public static class ShuffleboardConstants {
       public static final String AUTO_TAB = "Autonomous";

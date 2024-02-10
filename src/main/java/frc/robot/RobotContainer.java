@@ -16,6 +16,7 @@ import static frc.robot.Constants.Controllers.*;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -75,7 +76,7 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    // Put all the button controlles here
+    // Put all the button controls here
 
     // Intake
     // Intake In - X Button
@@ -92,6 +93,8 @@ public class RobotContainer {
 
     new JoystickButton(joystick, 5)
         .whileTrue(intakeOutCommand);
+
+       UsbCamera camera = new UsbCamera("camera", 0);
 
     //Shooter
     // Shooter shoot - B Button

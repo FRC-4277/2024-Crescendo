@@ -23,14 +23,15 @@ public class Shooter extends SubsystemBase {
     // This method will be called once per scheduler run
   }
   public void in() {
-    move(-1);
+    move(1);
   }
   public void out(){
-    move(1);
+    move(-1);
   }
   public void move(int direction){
     shooterTop.set(TalonSRXControlMode.PercentOutput, direction * SHOOTER_SPEED);
-    shooterBottom.set(TalonSRXControlMode.PercentOutput, direction * SHOOTER_SPEED);
+    shooterBottom.set(TalonSRXControlMode.PercentOutput, -direction * SHOOTER_SPEED);
+    System.out.println("Shooter:");
   }
   public void toggle(){
    
