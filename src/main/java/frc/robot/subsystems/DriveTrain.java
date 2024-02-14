@@ -5,9 +5,13 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+//import com.ctre.phoenix6.signals.;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 
@@ -25,6 +29,8 @@ public class DriveTrain extends SubsystemBase {
 
   // NavX
   private final AHRS navx = new AHRS(SerialPort.Port.kMXP);
+
+  //private ShuffleboardTab autoTab = Shuffleboard.getTab(AUTO_TAB);
 
   /** Creates a new DriveTrain. */
   public DriveTrain() {
@@ -51,13 +57,13 @@ public class DriveTrain extends SubsystemBase {
     // speedLimiter.calculate(joystick.getY()));
     // driveTrain.driveCartesian( signedPow (joystick.getX(), 2) ,
     // signedPow(joystick.getY(), 2), signedPow(joystick.getZ(), 2)*.5);
-    driveTrain.driveCartesian(x, y, z);
+    //driveTrain.driveCartesian(x, y, z);
 
     // option 2:
     // driveTrain.driveCartesian(x * 0.5, y * 0.5, z * 0.5);
 
     // option 3:
-    // driveTrain.driveCartesian(getSignedPow(x, 3), getSignedPow(y, 3), getSignedPow(z, 3));
+     //driveTrain.driveCartesian(getSignedPow(x, 3), getSignedPow(y, 3), getSignedPow(z, 3));
 
     // drive.arcadeDrive((Math.pow(joystick.getZ(),3)),
     // Math.pow(joystick.getY(),3));
@@ -76,17 +82,41 @@ public class DriveTrain extends SubsystemBase {
     // speedLimiter.calculate(joystick.getY()));
     // driveTrain.driveCartesian( signedPow (joystick.getX(), 2) ,
     // signedPow(joystick.getY(), 2), signedPow(joystick.getZ(), 2)*.5);
-   // driveTrain.driveCartesian(joystick.getX(), joystick.getY(), joystick.getZ());
+    //driveTrain.driveCartesian(Joystick joystick);
 
     // option 2:
-  //driveTrain.driveCartesian(joystick.getX() * 0.5, joystick.getY() * 0.5, joystick.getZ() * 0.5);
+    // driveTrain.driveCartesian(joystick.getX() * 0.5, joystick.getY() * 0.5, joystick.getZ() * 0.5);
 
     // option 3:
-    //driveTrain.driveCartesian(getSignedPow(joystick.getX(), 3), getSignedPow(joystick.getY(), 3), getSignedPow(joystick.getZ(), 3));
-driveTrain.driveCartesian(getSignedPow(-joystick.getY(), 3), getSignedPow(joystick.getX(), 3), getSignedPow(joystick.getZ(), 3));
+    driveTrain.driveCartesian(getSignedPow(-joystick.getY(), 3), getSignedPow(joystick.getX(), 3), getSignedPow(joystick.getZ(), 3));
+
     //option 1:
     // driveTrain.driveCartesian(joystick.getX(), joystick.getY(), joystick.getZ());
 
+  }
+
+  public void stop() {
+    //driveTrain.driveCartesian(0,0,0);
+    driveTrain.stopMotor();
+  }
+//Encoders
+  public double getFrontLeftEncoder() {
+    return leftFront.getPosition().getValueAsDouble();
+  }
+  public double getFrontRightEncoder() {
+    return rightFront.getPosition().getValueAsDouble();
+  }
+  public double getBackLeftEncoder() {
+    return leftBack.getPosition().getValueAsDouble();
+  }
+  public double getBackRightEncoder(){
+    return rightBack.getPosition().getValueAsDouble();
+  }
+  public void resetEncoders(){
+    leftFront.setPosition(0);
+    rightFront.setPosition(0);
+    leftBack.setPosition(0);
+    rightBack.setPosition(0);
   }
 
   @Override
