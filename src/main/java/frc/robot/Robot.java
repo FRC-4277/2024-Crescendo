@@ -8,6 +8,11 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+//2 inch sensor
+//import com.revrobotics.*;
+//import com.revrobotics.Rev2mDistanceSensor.Port;
+
+
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -16,6 +21,9 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * project.
  */
 public class Robot extends TimedRobot {
+  //private Rev2mDistanceSensor distOnboard; 
+  //private Rev2mDistanceSensor distMXP;
+
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
@@ -41,6 +49,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    //distOnboard = new Rev2mDistanceSensor(Port.kOnboard);
+    //distMXP = new Rev2mDistanceSensor(Port.kMXP);
+
+
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
@@ -76,9 +88,10 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
-    }
+    //if (m_autonomousCommand != null) {
+     // m_autonomousCommand.cancel();
+    //}
+    
   }
 
   /** This function is called periodically during operator control. */

@@ -117,6 +117,7 @@ public class RobotContainer {
     controlsTab.add(shooter);
 
     setupDriverTab();
+    setupAutonomousTab();
 
   }
 
@@ -124,6 +125,9 @@ public class RobotContainer {
     // TODO:  Add stuff like game time, camera stream, etc
     
   }
+    private void setupAutonomousTab(){
+
+    }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

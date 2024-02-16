@@ -29,8 +29,8 @@ public class Shooter extends SubsystemBase {
     move(-1);
   }
   public void move(int direction){
-    shooterTop.set(TalonSRXControlMode.PercentOutput, direction * 0.40);
-    shooterBottom.set(TalonSRXControlMode.PercentOutput, -direction * 0.60);
+    shooterTop.set(TalonSRXControlMode.PercentOutput, direction * 1);
+    shooterBottom.set(TalonSRXControlMode.PercentOutput, -direction * 0.50);
     //System.out.println("Shooter:");
   }
   public void toggle(){
