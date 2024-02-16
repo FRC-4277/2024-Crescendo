@@ -95,6 +95,11 @@ public class DriveTrain extends SubsystemBase {
 
   }
 
+  public void driveTimed(int direction, double speed) {
+    double howToDrive = direction * speed;
+    driveTrain.driveCartesian(speed, speed, howToDrive);
+  }
+
   public void stop() {
     //driveTrain.driveCartesian(0,0,0);
     driveTrain.stopMotor();

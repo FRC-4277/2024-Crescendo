@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.commands.AutonomousDriveForwardTimed;
 import frc.robot.commands.Autos;
 import frc.robot.commands.DriveManualCommand;
 import frc.robot.commands.IntakeInCommand;
@@ -126,7 +127,7 @@ public class RobotContainer {
     
   }
     private void setupAutonomousTab(){
-
+      autoChooser.addOption("Drive Forward Timed", new AutonomousDriveForwardTimed(driveTrain, 4));
     }
 
   /**
