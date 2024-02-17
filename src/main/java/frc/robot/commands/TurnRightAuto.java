@@ -4,36 +4,21 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
-
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.DriveTrain;
 
-public class AutonomousDriveForwardTimed extends Command {
-  private final DriveTrain driveTrain;
-  private final Timer timer = new Timer();
-  private final double runTime; 
-  /** Creates a new AutonomousDriveForwardTimed. */
-  public AutonomousDriveForwardTimed(DriveTrain driveTrain, double runTime) {
-    this.driveTrain = driveTrain;
-    this.runTime = runTime;
-    addRequirements(driveTrain);
+public class TurnRightAuto extends Command {
+  /** Creates a new TurnRightAuto. */
+  public TurnRightAuto() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    timer.reset();
-    timer.start();
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    System.out.println("Here!");
-    driveTrain.driveTimed(1,0.2);
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
@@ -42,6 +27,6 @@ public class AutonomousDriveForwardTimed extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return  timer.get() >= runTime;
+    return false;
   }
 }

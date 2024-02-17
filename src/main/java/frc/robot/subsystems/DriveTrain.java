@@ -47,6 +47,8 @@ public class DriveTrain extends SubsystemBase {
     leftBack.setInverted(false);
     leftFront.setInverted(false);
 
+    this.resetEncoders();
+
     driveTrain.setDeadband(0.1);
 
   }
@@ -97,7 +99,8 @@ public class DriveTrain extends SubsystemBase {
 
   public void driveTimed(int direction, double speed) {
     double howToDrive = direction * speed;
-    driveTrain.driveCartesian(speed, speed, howToDrive);
+    driveTrain.driveCartesian(0, howToDrive, 0);
+    //driveTrain.dr
   }
 
   public void stop() {

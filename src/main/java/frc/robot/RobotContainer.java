@@ -18,6 +18,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -56,6 +57,9 @@ public class RobotContainer {
   private final XboxController controller = new XboxController(XBOX_CONTROLLER);
   private final Joystick joystick = new Joystick(LOGITECH_JOYSTICK);
 
+  //Camera
+  UsbCamera camera = new UsbCamera("camera", 0);
+
   // Commands
   private final DriveManualCommand driveManualCommand = new DriveManualCommand(driveTrain, joystick, controller);
   private final IntakeInCommand intakeInCommand = new IntakeInCommand(intake);
@@ -75,6 +79,7 @@ public class RobotContainer {
     configureBindings();
     driveTrain.setDefaultCommand(driveManualCommand);
     setUpSmartDashboard();
+    //setupAutonomousTab();
   }
 
   private void configureBindings() {
@@ -96,7 +101,7 @@ public class RobotContainer {
     new JoystickButton(joystick, 5)
         .whileTrue(intakeOutCommand);
 
-       UsbCamera camera = new UsbCamera("camera", 0);
+       //UsbCamera camera = new UsbCamera("USB Camera 0", 0);
 
     //Shooter
     // Shooter shoot - B Button
@@ -127,7 +132,14 @@ public class RobotContainer {
     
   }
     private void setupAutonomousTab(){
+      autoChooser = new SendableChooser<>();
+      SendableRegistry.setName(autoChooser, "Autonomous Command");
       autoChooser.addOption("Drive Forward Timed", new AutonomousDriveForwardTimed(driveTrain, 4));
+      
+      //autoChooser.addOption("Do Nothing");
+      autonomousTab.add(autoChooser)
+      .withPosition(0, 0)
+      .withSize(2,1);
     }
 
   /**
@@ -136,6 +148,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new Autos();
+    return new AutonomousDriveForwardTimed(driveTrain, 4);
   }
 }

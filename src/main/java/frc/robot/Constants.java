@@ -29,7 +29,7 @@ public final class Constants {
     public static class IntakeConstants {
       public static final int INTAKE_BACK = 21;
       public static final int INTAKE_FRONT = 30;
-      public static final double INTAKE_SPEED = 0.65; 
+      public static final double INTAKE_SPEED = 0.95; 
       
     }
     public static class ShooterConstants {
