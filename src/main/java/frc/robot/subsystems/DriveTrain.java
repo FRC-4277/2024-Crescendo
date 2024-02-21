@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
@@ -18,6 +19,9 @@ import com.kauailabs.navx.frc.AHRS;
 import static frc.robot.Constants.DriveTrainConstants.*;
 
 public class DriveTrain extends SubsystemBase {
+  //Slew Rate Limiter
+  //private final SlewRateLimiter filter = new SlewRateLimiter(0.1);
+
   // Talons
   private final TalonFX leftFront = new TalonFX(LEFT_FRONT);
   private final TalonFX leftBack = new TalonFX(LEFT_BACK);
@@ -99,7 +103,7 @@ public class DriveTrain extends SubsystemBase {
 
   public void driveTimed(int direction, double speed) {
     double howToDrive = direction * speed;
-    driveTrain.driveCartesian(0, howToDrive, 0);
+    driveTrain.driveCartesian(howToDrive, 0, 0);
     //driveTrain.dr
   }
 

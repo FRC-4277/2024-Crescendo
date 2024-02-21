@@ -134,7 +134,7 @@ public class RobotContainer {
     private void setupAutonomousTab(){
       autoChooser = new SendableChooser<>();
       SendableRegistry.setName(autoChooser, "Autonomous Command");
-      autoChooser.addOption("Drive Forward Timed", new AutonomousDriveForwardTimed(driveTrain, 4));
+      autoChooser.addOption("Drive Forward Timed", new AutonomousDriveForwardTimed(driveTrain, 3));
       
       //autoChooser.addOption("Do Nothing");
       autonomousTab.add(autoChooser)
@@ -148,6 +148,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new AutonomousDriveForwardTimed(driveTrain, 4);
+    return new AutonomousDriveForwardTimed(driveTrain, 3);
   }
 }

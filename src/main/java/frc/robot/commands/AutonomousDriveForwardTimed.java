@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.Timer;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -32,7 +33,7 @@ public class AutonomousDriveForwardTimed extends Command {
   @Override
   public void execute() {
     System.out.println("Here!");
-    driveTrain.driveTimed(1,0.2);
+    driveTrain.driveTimed(1,0.4);
   }
 
   // Called once the command ends or is interrupted.
