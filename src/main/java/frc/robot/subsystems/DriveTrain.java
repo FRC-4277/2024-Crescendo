@@ -7,11 +7,19 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.TalonFXConfigurator;
+import com.ctre.phoenix6.hardware.DeviceIdentifier;
 //import com.ctre.phoenix6.signals.;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.kauailabs.navx.frc.AHRS;
@@ -20,7 +28,8 @@ import static frc.robot.Constants.DriveTrainConstants.*;
 
 public class DriveTrain extends SubsystemBase {
   //Slew Rate Limiter
-  //private final SlewRateLimiter filter = new SlewRateLimiter(0.1);
+  private final SlewRateLimiter filter = new SlewRateLimiter(0.9);
+ // public static final String kCANBus = "canivore";
 
   // Talons
   private final TalonFX leftFront = new TalonFX(LEFT_FRONT);
@@ -28,23 +37,37 @@ public class DriveTrain extends SubsystemBase {
   private final TalonFX rightFront = new TalonFX(RIGHT_FRONT);
   private final TalonFX rightBack = new TalonFX(RIGHT_BACK);
 
+  private final CurrentLimitsConfigs currentConfig = new CurrentLimitsConfigs();
+
+
   // Mecanum Drive
   final MecanumDrive driveTrain = new MecanumDrive(leftFront, leftBack, rightFront, rightBack);
 
   // NavX
-  private final AHRS navx = new AHRS(SerialPort.Port.kMXP);
+  //private final Rotation2d rotation2d = new Rotation2d();
 
   //private ShuffleboardTab autoTab = Shuffleboard.getTab(AUTO_TAB);
 
   /** Creates a new DriveTrain. */
   public DriveTrain() {
 
-    navx.reset();
-
+    //navx.reset();
     // We need to invert one side of the drivetrain so that positive voltages
     // result in both sides moving forward. Depending on how your robot's
     // gearbox is constructed, you might have to invert the left side instead.
     // Motor Configuration(s)
+TalonFXConfiguration talonConfigurator = new TalonFXConfiguration();
+currentConfig.SupplyCurrentLimit = 35;
+currentConfig.SupplyCurrentThreshold = 40;
+currentConfig.SupplyTimeThreshold = 5;
+currentConfig.SupplyCurrentLimitEnable = true;
+currentConfig.StatorCurrentLimit = 35;
+currentConfig.StatorCurrentLimitEnable = true;
+talonConfigurator.CurrentLimits = currentConfig;
+leftBack.getConfigurator().apply(talonConfigurator);
+leftFront.getConfigurator().apply(talonConfigurator);
+rightBack.getConfigurator().apply(talonConfigurator);
+rightFront.getConfigurator().apply(talonConfigurator);
 
     rightBack.setInverted(true);
     rightFront.setInverted(true);
@@ -57,7 +80,9 @@ public class DriveTrain extends SubsystemBase {
 
   }
 
-  
+  private double getSignedPow(double x, double y) {
+    return Math.pow(x, y);
+  }
   public void driveJoystick(double x, double y, double z) {
     // drive.arcadeDrive(twistLimiter.calculate(joystick.getZ()*0.8),
     // speedLimiter.calculate(joystick.getY()));
@@ -79,10 +104,6 @@ public class DriveTrain extends SubsystemBase {
     // drive.arcadeDrive(adjustedZ, joystick.getY(), true);
   }
 
-  private double getSignedPow(double x, double y) {
-    return Math.pow(x, y);
-  }
-
   public void driveJoystick(Joystick joystick) {
     // drive.arcadeDrive(twistLimiter.calculate(joystick.getZ()*0.8),
     // speedLimiter.calculate(joystick.getY()));
@@ -94,10 +115,15 @@ public class DriveTrain extends SubsystemBase {
     // driveTrain.driveCartesian(joystick.getX() * 0.5, joystick.getY() * 0.5, joystick.getZ() * 0.5);
 
     // option 3:
-    driveTrain.driveCartesian(getSignedPow(-joystick.getY(), 3), getSignedPow(joystick.getX(), 3), getSignedPow(joystick.getZ(), 3));
+    driveTrain.driveCartesian(getSignedPow(-joystick.getY(), 3), getSignedPow(joystick.getX(), 3), filter.calculate(getSignedPow(joystick.getZ(), 3)));
 
     //option 1:
     // driveTrain.driveCartesian(joystick.getX(), joystick.getY(), joystick.getZ());
+
+  }
+
+  public void fieldOrientedDrive(Joystick joystick, AHRS gyro){
+     driveTrain.driveCartesian(getSignedPow(-joystick.getY(), 3), getSignedPow(joystick.getX(), 3), filter.calculate(getSignedPow(joystick.getZ(), 3)),gyro.getRotation2d().unaryMinus());
 
   }
 

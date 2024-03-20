@@ -6,16 +6,32 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.IntakeConstants.*;
 
 public class Intake extends SubsystemBase {
     private final TalonSRX intakeFront = new TalonSRX(INTAKE_FRONT);
     private final TalonSRX intakeBack = new TalonSRX(INTAKE_BACK);
+    private final CurrentLimitsConfigs currentConfig = new CurrentLimitsConfigs();
+    private DigitalInput intakeStopSensor = new DigitalInput(0);
   /** Creates a new Intake. */
   public Intake() {
-  }
+    /* TalonSRXConfiguration talonConfigurator = new TalonSRXConfiguration();
+currentConfig.SupplyCurrentLimit = 35;
+currentConfig.SupplyCurrentThreshold = 40;
+currentConfig.SupplyTimeThreshold = 1;
+currentConfig.SupplyCurrentLimitEnable = true;
+currentConfig.StatorCurrentLimit = 35;
+currentConfig.StatorCurrentLimitEnable = true;
+talonConfigurator.CurrentLimits = currentConfig;
+intakeBack.getConfigurator().apply(talonConfigurator);
+intakeFront.getConfigurator().apply(talonConfigurator);
+
+  */ }
 
   @Override
   public void periodic() {
@@ -38,5 +54,8 @@ public class Intake extends SubsystemBase {
   public void stop(){ 
     intakeFront.set(TalonSRXControlMode.PercentOutput, 0);
     intakeBack.set(TalonSRXControlMode.PercentOutput, 0);
-  };
+  }
+  public boolean getStopSensor(){
+    return intakeStopSensor.get();
+  }
 }

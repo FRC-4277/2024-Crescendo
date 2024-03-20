@@ -88,10 +88,10 @@ public class RobotContainer {
     // Intake
     // Intake In - X Button
     new JoystickButton(controller, Button.kX.value)
-        .whileTrue(intakeInCommand);
+        .onTrue(intakeInCommand);
 
-    new JoystickButton(joystick, Button.kX.value)
-        .whileTrue(intakeInCommand);
+    //new JoystickButton(joystick, Button.kX.value)
+        //.onTrue(intakeInCommand);
 
     // Intake Out - Y Button
 

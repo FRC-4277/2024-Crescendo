@@ -21,6 +21,7 @@ public class IntakeInCommand extends Command {
   @Override
   public void execute() {
     intake.in();
+    System.out.println(!intake.getStopSensor());
   }
 
   // Called once the command ends or is interrupted.
@@ -32,6 +33,6 @@ public class IntakeInCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return !intake.getStopSensor();
   }
 }

@@ -4,7 +4,10 @@
 
 package frc.robot.commands;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.XboxController;
 //import edu.wpi.first.wpilibj.PS5Controller.Axis;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -15,16 +18,19 @@ public class DriveManualCommand extends Command {
    private final DriveTrain driveTrain;
    private final XboxController controller;
    private final Joystick joystick;
+private final AHRS navx = new AHRS(SerialPort.Port.kMXP);
 
    public DriveManualCommand(DriveTrain driveTrain, Joystick joystick, XboxController controller) {
     this.driveTrain = driveTrain;
     this.joystick = joystick;
     this.controller = controller;
     addRequirements(driveTrain);
+    navx.reset();
   }
   
   public void execute() {
-      driveTrain.driveJoystick(joystick);
+     // driveTrain.driveJoystick(joystick);
+     driveTrain.fieldOrientedDrive(joystick, navx);
   }
   // Called once the command ends or is interrupted.
   
