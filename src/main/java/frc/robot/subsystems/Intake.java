@@ -5,33 +5,25 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.IntakeConstants.*;
 
 public class Intake extends SubsystemBase {
-    private final TalonSRX intakeFront = new TalonSRX(INTAKE_FRONT);
-    private final TalonSRX intakeBack = new TalonSRX(INTAKE_BACK);
-    private final CurrentLimitsConfigs currentConfig = new CurrentLimitsConfigs();
+    private final WPI_TalonSRX intakeFront = new WPI_TalonSRX(INTAKE_FRONT);
+    private final WPI_TalonSRX intakeBack = new WPI_TalonSRX(INTAKE_BACK);
     private DigitalInput intakeStopSensor = new DigitalInput(0);
   /** Creates a new Intake. */
   public Intake() {
-    /* TalonSRXConfiguration talonConfigurator = new TalonSRXConfiguration();
-currentConfig.SupplyCurrentLimit = 35;
-currentConfig.SupplyCurrentThreshold = 40;
-currentConfig.SupplyTimeThreshold = 1;
-currentConfig.SupplyCurrentLimitEnable = true;
-currentConfig.StatorCurrentLimit = 35;
-currentConfig.StatorCurrentLimitEnable = true;
-talonConfigurator.CurrentLimits = currentConfig;
-intakeBack.getConfigurator().apply(talonConfigurator);
-intakeFront.getConfigurator().apply(talonConfigurator);
-
-  */ }
+    intakeFront.configPeakCurrentLimit(35, 1000);
+    intakeBack.configPeakCurrentLimit(35,1000);
+    intakeFront.configContinuousCurrentLimit(30);
+    intakeBack.configContinuousCurrentLimit(30);
+    intakeFront.enableCurrentLimit(true);
+    intakeBack.enableCurrentLimit(true);
+  }
 
   @Override
   public void periodic() {
