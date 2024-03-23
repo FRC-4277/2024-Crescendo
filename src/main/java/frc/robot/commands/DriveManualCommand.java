@@ -29,8 +29,8 @@ private final AHRS navx = new AHRS(SerialPort.Port.kMXP);
   }
   
   public void execute() {
-     // driveTrain.driveJoystick(joystick);
-     driveTrain.fieldOrientedDrive(joystick, navx);
+     driveTrain.driveJoystick(joystick);
+     //driveTrain.fieldOrientedDrive(joystick, navx);
   }
   // Called once the command ends or is interrupted.
   

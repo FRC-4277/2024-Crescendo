@@ -28,7 +28,7 @@ import static frc.robot.Constants.DriveTrainConstants.*;
 
 public class DriveTrain extends SubsystemBase {
   //Slew Rate Limiter
-  private final SlewRateLimiter filter = new SlewRateLimiter(0.9);
+  private final SlewRateLimiter filter = new SlewRateLimiter(1.2);
  // public static final String kCANBus = "canivore";
 
   // Talons
@@ -115,7 +115,10 @@ rightFront.getConfigurator().apply(talonConfigurator);
     // driveTrain.driveCartesian(joystick.getX() * 0.5, joystick.getY() * 0.5, joystick.getZ() * 0.5);
 
     // option 3:
-    driveTrain.driveCartesian(getSignedPow(-joystick.getY(), 3), getSignedPow(joystick.getX(), 3), filter.calculate(getSignedPow(joystick.getZ(), 3)));
+    double processedZInput = (joystick.getZ() == 0) ? getSignedPow(joystick.getZ(), 3) : filter.calculate(getSignedPow(joystick.getZ(), 3));
+    double processedXInput = filter.calculate(getSignedPow(joystick.getX(), 3));
+    double processedYInput = filter.calculate(getSignedPow(-joystick.getY(), 3));
+    driveTrain.driveCartesian(processedYInput, processedXInput, processedZInput);
 
     //option 1:
     // driveTrain.driveCartesian(joystick.getX(), joystick.getY(), joystick.getZ());
