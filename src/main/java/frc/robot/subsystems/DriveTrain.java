@@ -37,6 +37,13 @@ public class DriveTrain extends SubsystemBase {
   private final TalonFX rightFront = new TalonFX(RIGHT_FRONT);
   private final TalonFX rightBack = new TalonFX(RIGHT_BACK);
 
+  private double processedXInput;
+  private double processedYInput;
+  private double processedZInput;
+  private double motorRotaions;
+  private double numberOfWheelRotations;
+  private double distanceTraveled;
+  private final AHRS navx = new AHRS(SerialPort.Port.kMXP);
   private final CurrentLimitsConfigs currentConfig = new CurrentLimitsConfigs();
 
 
@@ -94,7 +101,7 @@ rightFront.getConfigurator().apply(talonConfigurator);
     // driveTrain.driveCartesian(x * 0.5, y * 0.5, z * 0.5);
 
     // option 3:
-     //driveTrain.driveCartesian(getSignedPow(x, 3), getSignedPow(y, 3), getSignedPow(z, 3));
+     driveTrain.driveCartesian(getSignedPow(y, 3), getSignedPow(x, 3), getSignedPow(z, 3));
 
     // drive.arcadeDrive((Math.pow(joystick.getZ(),3)),
     // Math.pow(joystick.getY(),3));
@@ -115,10 +122,10 @@ rightFront.getConfigurator().apply(talonConfigurator);
     // driveTrain.driveCartesian(joystick.getX() * 0.5, joystick.getY() * 0.5, joystick.getZ() * 0.5);
 
     // option 3:
-    double processedZInput = (joystick.getZ() == 0) ? getSignedPow(joystick.getZ(), 3) : filter.calculate(getSignedPow(joystick.getZ(), 3));
-    double processedXInput = filter.calculate(getSignedPow(joystick.getX(), 3));
-    double processedYInput = filter.calculate(getSignedPow(-joystick.getY(), 3));
-    driveTrain.driveCartesian(processedYInput, processedXInput, processedZInput);
+   // processedZInput = (joystick.getZ() == 0) ? getSignedPow(joystick.getZ(), 3) : filter.calculate(getSignedPow(joystick.getZ(), 3));
+    //processedXInput = filter.calculate(getSignedPow(joystick.getX(), 3));
+    //processedYInput = filter.calculate(getSignedPow(-joystick.getY(), 3));
+    driveTrain.driveCartesian(getSignedPow(-joystick.getY(), 3), getSignedPow(joystick.getX(), 3), (Math.abs(joystick.getZ()) < 0.1) ? getSignedPow(joystick.getZ(), 3) : filter.calculate(getSignedPow(joystick.getZ(), 3)));
 
     //option 1:
     // driveTrain.driveCartesian(joystick.getX(), joystick.getY(), joystick.getZ());
@@ -159,9 +166,13 @@ rightFront.getConfigurator().apply(talonConfigurator);
     leftBack.setPosition(0);
     rightBack.setPosition(0);
   }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
+public double getRobotDistanceTraveledFeet(double ticks){
+  motorRotaions=Math.abs(ticks)/2048;
+  numberOfWheelRotations=motorRotaions*8.536;
+  distanceTraveled=numberOfWheelRotations*Math.PI*0.5;
+  return distanceTraveled;
+}
+public double getNavx(){
+  return navx.getAngle();
+}
 }

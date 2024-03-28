@@ -15,6 +15,7 @@ public class Intake extends SubsystemBase {
     private final WPI_TalonSRX intakeFront = new WPI_TalonSRX(INTAKE_FRONT);
     private final WPI_TalonSRX intakeBack = new WPI_TalonSRX(INTAKE_BACK);
     private DigitalInput intakeStopSensor = new DigitalInput(0);
+    private boolean stickySensorBool = false;
   /** Creates a new Intake. */
   public Intake() {
     intakeFront.configPeakCurrentLimit(35, 1000);
@@ -47,7 +48,15 @@ public class Intake extends SubsystemBase {
     intakeFront.set(TalonSRXControlMode.PercentOutput, 0);
     intakeBack.set(TalonSRXControlMode.PercentOutput, 0);
   }
+  public void resetStickySensorBool (){
+    stickySensorBool = false;
+  }
   public boolean getStopSensor(){
-    return intakeStopSensor.get();
+    //System.out.println("Sticky Sensor Bool:" + stickySensorBool);
+    //System.out.println("Digital Input:" + intakeStopSensor.get());
+    if (intakeStopSensor.get() == false){
+      stickySensorBool = true;
+    } 
+    return stickySensorBool;
   }
 }

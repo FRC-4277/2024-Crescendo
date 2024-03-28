@@ -15,13 +15,15 @@ public class IntakeInCommand extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    intake.resetStickySensorBool();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     intake.in();
-    System.out.println(!intake.getStopSensor());
+    System.out.println(intake.getStopSensor());
   }
 
   // Called once the command ends or is interrupted.
@@ -33,6 +35,6 @@ public class IntakeInCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !intake.getStopSensor();
+    return intake.getStopSensor();
   }
 }

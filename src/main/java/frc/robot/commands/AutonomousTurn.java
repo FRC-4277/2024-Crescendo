@@ -6,20 +6,20 @@ package frc.robot.commands;
 
 import com.ctre.phoenix.led.ColorFlowAnimation.Direction;
 
+import edu.wpi.first.units.Angle;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveTrain;
 
-public class AutonomousDriveForward extends Command {
+public class AutonomousTurn extends Command {
   public final DriveTrain driveTrain;
-  public final double speedX;
-  public final double speedY;
-  public final double distance;
+  public final double speedZ;
+  public final double angle;
+
   /** Creates a new AutonomousDriveForward. */
-  public AutonomousDriveForward(DriveTrain driveTrain,double speedX, double speedY, double distance) {
+  public AutonomousTurn(DriveTrain driveTrain, double speedZ, double angle) {
     this.driveTrain = driveTrain;
-    this.speedX = speedX;
-    this.speedY = speedY;
-    this.distance = distance;
+    this.speedZ = speedZ;
+    this.angle = angle;
 
     // Use addRequirements() here to declare subsystem dependencies.
     //this.distance = (double) driveTrain.countsGivenInches(distance);
@@ -36,7 +36,7 @@ public class AutonomousDriveForward extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveTrain.driveJoystick(speedX, speedY, 0);
+    driveTrain.driveJoystick(0, 0, speedZ);
   }
 
   // Called once the command ends or is interrupted.
@@ -49,6 +49,6 @@ public class AutonomousDriveForward extends Command {
   @Override
   public boolean isFinished() {
     
-    return driveTrain.getRobotDistanceTraveledFeet(driveTrain.getBackLeftEncoder())>=distance;
+    return Math.abs(driveTrain.getNavx())>= Math.abs(angle);
   }
 }
