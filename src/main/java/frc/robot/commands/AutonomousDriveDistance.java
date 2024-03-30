@@ -9,13 +9,13 @@ import com.ctre.phoenix.led.ColorFlowAnimation.Direction;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveTrain;
 
-public class AutonomousDriveForward extends Command {
+public class AutonomousDriveDistance extends Command {
   public final DriveTrain driveTrain;
   public final double speedX;
   public final double speedY;
   public final double distance;
   /** Creates a new AutonomousDriveForward. */
-  public AutonomousDriveForward(DriveTrain driveTrain,double speedX, double speedY, double distance) {
+  public AutonomousDriveDistance(DriveTrain driveTrain,double speedX, double speedY, double distance) {
     this.driveTrain = driveTrain;
     this.speedX = speedX;
     this.speedY = speedY;
@@ -36,7 +36,7 @@ public class AutonomousDriveForward extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveTrain.driveJoystick(speedX, speedY, 0);
+    driveTrain.driveAuto(speedX, speedY, 0);
   }
 
   // Called once the command ends or is interrupted.
@@ -48,7 +48,9 @@ public class AutonomousDriveForward extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    
+    System.out.println("AutoDriveForward back left encoder: " + driveTrain.getBackLeftEncoder());
+    System.out.println("AutoDriveForward distance: " + distance);
+   
     return driveTrain.getRobotDistanceTraveledFeet(driveTrain.getBackLeftEncoder())>=distance;
   }
 }

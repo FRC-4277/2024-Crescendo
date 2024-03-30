@@ -38,8 +38,8 @@ public class Intake extends SubsystemBase {
     move(-1);
   }
   public void move(int direction){
-    intakeFront.set(TalonSRXControlMode.PercentOutput, direction * INTAKE_SPEED);
-    intakeBack.set(TalonSRXControlMode.PercentOutput, -direction * INTAKE_SPEED);
+    intakeFront.set(TalonSRXControlMode.PercentOutput, -direction * INTAKE_SPEED);
+    intakeBack.set(TalonSRXControlMode.PercentOutput, direction * INTAKE_SPEED);
   }
   public void toggle(){
    

@@ -14,10 +14,16 @@ public class AutonomousDriveForwardTimed extends Command {
   private final DriveTrain driveTrain;
   private final Timer timer = new Timer();
   private final double runTime; 
+  private final double x;
+  private final double y;
+  private final double z;
   /** Creates a new AutonomousDriveForwardTimed. */
-  public AutonomousDriveForwardTimed(DriveTrain driveTrain, double runTime) {
+  public AutonomousDriveForwardTimed(DriveTrain driveTrain, double runTime, double x, double y, double z) {
     this.driveTrain = driveTrain;
     this.runTime = runTime;
+    this.x = x;
+    this.y = y;
+    this.z = z;
     addRequirements(driveTrain);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -32,13 +38,15 @@ public class AutonomousDriveForwardTimed extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Here!");
-    driveTrain.driveTimed(1,0.4);
+    System.out.println("AutoDriveForwardTimed!");
+    driveTrain.driveAuto(x, y, z);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    driveTrain.stop();
+  }
 
   // Returns true when the command should end.
   @Override

@@ -4,11 +4,15 @@
 
 package frc.robot;
 
+import frc.robot.commands.AutonomousDriveDistance;
 import frc.robot.commands.AutonomousDriveForwardTimed;
-import frc.robot.commands.Autos;
+import frc.robot.commands.AutonomousRedAmpScore;
+import frc.robot.commands.AutonomousTurn;
 import frc.robot.commands.DriveManualCommand;
 import frc.robot.commands.IntakeInCommand;
 import frc.robot.commands.IntakeOutCommand;
+import frc.robot.commands.AutoShootOutCommandGroup;
+import frc.robot.commands.AutoShootTimed;
 import frc.robot.commands.ShooterShootOutCommand;
 import frc.robot.commands.ShooterReverseCommand;
 
@@ -43,21 +47,20 @@ public class RobotContainer {
   private final ShuffleboardTab autonomousTab = Shuffleboard.getTab("Autonomous");
   private final ShuffleboardTab controlsTab = Shuffleboard.getTab("Main");
   private SendableChooser autoChooser;
-  
 
   // subsystems
   private final DriveTrain driveTrain = new DriveTrain();
   private final Intake intake = new Intake();
   private final Shooter shooter = new Shooter();
-  // TODO:  Add climber
+  // TODO: Add climber
 
-  // TODO:  Add Limelight
+  // TODO: Add Limelight
 
   // Controllers
   private final XboxController controller = new XboxController(XBOX_CONTROLLER);
   private final Joystick joystick = new Joystick(LOGITECH_JOYSTICK);
 
-  //Camera
+  // Camera
   UsbCamera camera = new UsbCamera("camera", 0);
 
   // Commands
@@ -79,7 +82,7 @@ public class RobotContainer {
     configureBindings();
     driveTrain.setDefaultCommand(driveManualCommand);
     setUpSmartDashboard();
-    //setupAutonomousTab();
+    // setupAutonomousTab();
   }
 
   private void configureBindings() {
@@ -90,8 +93,8 @@ public class RobotContainer {
     new JoystickButton(controller, Button.kX.value)
         .onTrue(intakeInCommand);
 
-    //new JoystickButton(joystick, Button.kX.value)
-        //.onTrue(intakeInCommand);
+    // new JoystickButton(joystick, Button.kX.value)
+    // .onTrue(intakeInCommand);
 
     // Intake Out - Y Button
 
@@ -101,9 +104,9 @@ public class RobotContainer {
     new JoystickButton(joystick, 5)
         .whileTrue(intakeOutCommand);
 
-       //UsbCamera camera = new UsbCamera("USB Camera 0", 0);
+    // UsbCamera camera = new UsbCamera("USB Camera 0", 0);
 
-    //Shooter
+    // Shooter
     // Shooter shoot - B Button
     new JoystickButton(controller, Button.kB.value)
         .whileTrue(shootCommand);
@@ -113,8 +116,8 @@ public class RobotContainer {
         .whileTrue(shooterReverseCommand);
 
     // Climber
-    // TODO:  Add commands
-    
+    // TODO: Add commands
+
   }
 
   private void setUpSmartDashboard() {
@@ -127,20 +130,25 @@ public class RobotContainer {
 
   }
 
-   private void setupDriverTab() {
-    // TODO:  Add stuff like game time, camera stream, etc
-    
+  private void setupDriverTab() {
+    // TODO: Add stuff like game time, camera stream, etc
+
   }
-    private void setupAutonomousTab(){
-      autoChooser = new SendableChooser<>();
-      SendableRegistry.setName(autoChooser, "Autonomous Command");
-      autoChooser.addOption("Drive Forward Timed", new AutonomousDriveForwardTimed(driveTrain, 3));
-      
-      //autoChooser.addOption("Do Nothing");
-      autonomousTab.add(autoChooser)
-      .withPosition(0, 0)
-      .withSize(2,1);
-    }
+
+  private void setupAutonomousTab() {
+    autoChooser = new SendableChooser<>();
+    SendableRegistry.setName(autoChooser, "Autonomous Command");
+    autoChooser.addOption("Drive Forward Timed", new AutonomousDriveForwardTimed(driveTrain, 3, 0, 0.5,0));
+    autoChooser.addOption("Red Amp Score", new AutonomousRedAmpScore(driveTrain, shooter, intake));
+    autoChooser.addOption("Drive distance", new AutonomousDriveDistance(driveTrain, 0, 1, 1));
+    autoChooser.addOption("Turn 90", new AutonomousTurn(driveTrain, 0., 90));
+    autoChooser.addOption("Shoot", new AutoShootOutCommandGroup(shooter, intake, 1));
+
+    // autoChooser.addOption("Do Nothing");
+    autonomousTab.add(autoChooser)
+        .withPosition(0, 0)
+        .withSize(3, 1);
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -148,6 +156,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new AutonomousDriveForwardTimed(driveTrain, 3);
+    return (Command) autoChooser.getSelected();
   }
 }
