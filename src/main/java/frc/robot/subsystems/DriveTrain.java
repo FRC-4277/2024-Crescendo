@@ -5,25 +5,16 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
-import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.configs.TalonFXConfigurator;
-import com.ctre.phoenix6.hardware.DeviceIdentifier;
-//import com.ctre.phoenix6.signals.;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.kauailabs.navx.frc.AHRS;
 
 import static frc.robot.Constants.DriveTrainConstants.*;
@@ -31,6 +22,7 @@ import static frc.robot.Constants.DriveTrainConstants.*;
 public class DriveTrain extends SubsystemBase {
   // Slew Rate Limiter
   private final SlewRateLimiter filter = new SlewRateLimiter(1.2);
+  private final SlewRateLimiter autoFilter = new SlewRateLimiter(1.0);
   // public static final String kCANBus = "canivore";
 
   // Talons
@@ -42,12 +34,13 @@ public class DriveTrain extends SubsystemBase {
   private double processedXInput;
   private double processedYInput;
   private double processedZInput;
-  private double motorRotaions;
+  private double motorRotations;
   private double numberOfWheelRotations;
   private double distanceTraveled;
-  private final AHRS navx = new AHRS(SerialPort.Port.kMXP);
+  private final AHRS navx = new AHRS(SPI.Port.kMXP);
   private final ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
   private final CurrentLimitsConfigs currentConfig = new CurrentLimitsConfigs();
+  private final FeedbackConfigs feedbackConfigs = new FeedbackConfigs();
 
   // Mecanum Drive
   final MecanumDrive driveTrain = new MecanumDrive(leftFront, leftBack, rightFront, rightBack);
@@ -72,7 +65,10 @@ public class DriveTrain extends SubsystemBase {
     currentConfig.SupplyCurrentLimitEnable = true;
     currentConfig.StatorCurrentLimit = 35;
     currentConfig.StatorCurrentLimitEnable = true;
+    feedbackConfigs.RotorToSensorRatio = 1;
+    feedbackConfigs.SensorToMechanismRatio = 1;
     talonConfigurator.CurrentLimits = currentConfig;
+    talonConfigurator.Feedback = feedbackConfigs;
     leftBack.getConfigurator().apply(talonConfigurator);
     leftFront.getConfigurator().apply(talonConfigurator);
     rightBack.getConfigurator().apply(talonConfigurator);
@@ -86,6 +82,7 @@ public class DriveTrain extends SubsystemBase {
     this.resetEncoders();
     this.resetNavx();
     this.resetGyro();
+    this.setCoastMode();
 
     driveTrain.setDeadband(0.1);
 
@@ -96,50 +93,20 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void driveAuto(double x, double y, double z) {
-    // drive.arcadeDrive(twistLimiter.calculate(joystick.getZ()*0.8),
-    // speedLimiter.calculate(joystick.getY()));
-    // driveTrain.driveCartesian( signedPow (joystick.getX(), 2) ,
-    // signedPow(joystick.getY(), 2), signedPow(joystick.getZ(), 2)*.5);
-    // driveTrain.driveCartesian(x, y, z);
-
-    // option 2:
-    // driveTrain.driveCartesian(x * 0.5, y * 0.5, z * 0.5);
 
     // option 3:
     System.out.println("drive auto : ");
-   
-    driveTrain.driveCartesian(y,x,z);
 
-    // drive.arcadeDrive((Math.pow(joystick.getZ(),3)),
-    // Math.pow(joystick.getY(),3));
-    // reportToShuffleboard(joystick);
+    driveTrain.driveCartesian(y, x, z < 0.1 ? z : autoFilter.calculate(z));
 
-    // double adjustedZ = getAdjustedZ(joystick);
-    // drive.arcadeDrive(adjustedZ, joystick.getY(), true);
+  
   }
 
   public void driveJoystick(Joystick joystick) {
-    // drive.arcadeDrive(twistLimiter.calculate(joystick.getZ()*0.8),
-    // speedLimiter.calculate(joystick.getY()));
-    // driveTrain.driveCartesian( signedPow (joystick.getX(), 2) ,
-    // signedPow(joystick.getY(), 2), signedPow(joystick.getZ(), 2)*.5);
-    // driveTrain.driveCartesian(Joystick joystick);
-
-    // option 2:
-    // driveTrain.driveCartesian(joystick.getX() * 0.5, joystick.getY() * 0.5,
-    // joystick.getZ() * 0.5);
-
-    // option 3:
-    // processedZInput = (joystick.getZ() == 0) ? getSignedPow(joystick.getZ(), 3) :
-    // filter.calculate(getSignedPow(joystick.getZ(), 3));
-    // processedXInput = filter.calculate(getSignedPow(joystick.getX(), 3));
-    // processedYInput = filter.calculate(getSignedPow(-joystick.getY(), 3));
+   
     driveTrain.driveCartesian(getSignedPow(-joystick.getY(), 3), getSignedPow(joystick.getX(), 3),
         (Math.abs(joystick.getZ()) < 0.1) ? getSignedPow(joystick.getZ(), 3)
             : filter.calculate(getSignedPow(joystick.getZ(), 3)));
-
-    // option 1:
-    // driveTrain.driveCartesian(joystick.getX(), joystick.getY(), joystick.getZ());
 
   }
 
@@ -178,25 +145,40 @@ public class DriveTrain extends SubsystemBase {
     rightBack.setPosition(0);
   }
 
+  public void setBrakeMode() {
+    leftBack.setNeutralMode(NeutralModeValue.Brake);
+    leftFront.setNeutralMode(NeutralModeValue.Brake);
+    rightBack.setNeutralMode(NeutralModeValue.Brake);
+    rightFront.setNeutralMode(NeutralModeValue.Brake);
+  }
+
+  public void setCoastMode() {
+    leftBack.setNeutralMode(NeutralModeValue.Coast);
+    leftFront.setNeutralMode(NeutralModeValue.Coast);
+    rightBack.setNeutralMode(NeutralModeValue.Coast);
+    rightFront.setNeutralMode(NeutralModeValue.Coast);
+  }
+
   public void resetNavx() {
     navx.reset();
   }
 
   public void resetGyro() {
-      gyro.calibrate();
+    gyro.calibrate();
   }
 
-  public double getRobotDistanceTraveledFeet(double ticks) {
-    motorRotaions = Math.abs(ticks) / 2048;
-    numberOfWheelRotations = motorRotaions * 8.536;
+  public double getRobotDistanceTraveledFeet(double rotations) {
+    //motorRotaions = Math.abs(ticks) / 2048;
+    motorRotations = Math.abs(rotations);
+    numberOfWheelRotations = motorRotations / 8.067;
     distanceTraveled = numberOfWheelRotations * Math.PI * 0.5;
     System.out.println("Distance traveled feet:" + distanceTraveled);
     return distanceTraveled;
   }
 
   public double getNavxAngle() {
-   // double angle = navx.getRotation2d().getDegrees();
-   double angle = gyro.getAngle();
+    double angle = navx.getRotation2d().getDegrees();
+    // double angle = gyro.getAngle();
     System.out.println("Navx angle:" + angle);
     return angle;
   }

@@ -9,17 +9,12 @@ import com.ctre.phoenix.led.ColorFlowAnimation.Direction;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveTrain;
 
-public class AutonomousDriveDistance extends Command {
+public class AutoSetCoastMode extends Command {
   public final DriveTrain driveTrain;
-  public final double speedX;
-  public final double speedY;
-  public final double distance;
+  
   /** Creates a new AutonomousDriveForward. */
-  public AutonomousDriveDistance(DriveTrain driveTrain,double speedX, double speedY, double distance) {
+  public AutoSetCoastMode(DriveTrain driveTrain) {
     this.driveTrain = driveTrain;
-    this.speedX = speedX;
-    this.speedY = speedY;
-    this.distance = distance;
 
     // Use addRequirements() here to declare subsystem dependencies.
     //this.distance = (double) driveTrain.countsGivenInches(distance);
@@ -30,14 +25,13 @@ public class AutonomousDriveDistance extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    driveTrain.resetEncoders();
-    driveTrain.setBrakeMode();
+    driveTrain.setCoastMode();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveTrain.driveAuto(speedX, speedY, 0);
+  
   }
 
   // Called once the command ends or is interrupted.
@@ -49,9 +43,6 @@ public class AutonomousDriveDistance extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    System.out.println("AutoDriveForward back left encoder: " + driveTrain.getBackLeftEncoder());
-    System.out.println("AutoDriveForward distance: " + distance);
-   
-    return driveTrain.getRobotDistanceTraveledFeet(driveTrain.getBackLeftEncoder())>=distance;
+   return true;
   }
 }

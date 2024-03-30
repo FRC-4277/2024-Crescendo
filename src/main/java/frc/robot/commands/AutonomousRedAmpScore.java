@@ -18,10 +18,13 @@ public class AutonomousRedAmpScore extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-        new AutonomousDriveDistance(driveTrain, 0, 0.2, 2),
-        new AutonomousTurn(driveTrain, 0.1, 90),
-        new AutonomousDriveDistance(driveTrain, 0, 0.2, 1),
-        new AutoShootOutCommandGroup(shooter, intake, 2),
-        new AutonomousDriveForwardTimed(driveTrain, 3, 0.1, -0.2, 0));
+        new AutonomousDriveDistance(driveTrain, 0, 0.2, 4.9),
+        new AutonomousTurn(driveTrain, 0.1, 80),
+        new AutonomousDriveDistance(driveTrain, 0, 0.2, 3.791),
+        new AutoShootOutCommandGroup(shooter, intake, 0.5),
+        new AutonomousDriveDistance(driveTrain, 0, -0.2, 2.0),
+        new AutonomousTurn(driveTrain, -0.1, 80),
+        new AutonomousDriveDistance(driveTrain, 0, 0.2, 3),
+        new AutoSetCoastMode(driveTrain));
   }
 }

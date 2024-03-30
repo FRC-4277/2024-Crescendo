@@ -13,7 +13,7 @@ import frc.robot.commands.IntakeInCommand;
 import frc.robot.commands.IntakeOutCommand;
 import frc.robot.commands.AutoShootOutCommandGroup;
 import frc.robot.commands.AutoShootTimed;
-import frc.robot.commands.ShooterShootOutCommand;
+import frc.robot.commands.ShootOutCommandGroup;
 import frc.robot.commands.ShooterReverseCommand;
 
 import static frc.robot.Constants.Controllers.*;
@@ -67,7 +67,7 @@ public class RobotContainer {
   private final DriveManualCommand driveManualCommand = new DriveManualCommand(driveTrain, joystick, controller);
   private final IntakeInCommand intakeInCommand = new IntakeInCommand(intake);
   private final IntakeOutCommand intakeOutCommand = new IntakeOutCommand(intake);
-  private final ShooterShootOutCommand shootCommand = new ShooterShootOutCommand(shooter);
+  private final ShootOutCommandGroup shootCommand = new ShootOutCommandGroup(shooter, intake);
   private final ShooterReverseCommand shooterReverseCommand = new ShooterReverseCommand(shooter);
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -140,8 +140,8 @@ public class RobotContainer {
     SendableRegistry.setName(autoChooser, "Autonomous Command");
     autoChooser.addOption("Drive Forward Timed", new AutonomousDriveForwardTimed(driveTrain, 3, 0, 0.5,0));
     autoChooser.addOption("Red Amp Score", new AutonomousRedAmpScore(driveTrain, shooter, intake));
-    autoChooser.addOption("Drive distance", new AutonomousDriveDistance(driveTrain, 0, 1, 1));
-    autoChooser.addOption("Turn 90", new AutonomousTurn(driveTrain, 0., 90));
+    autoChooser.addOption("Drive distance", new AutonomousDriveDistance(driveTrain, 0, 0.2, 3));
+    autoChooser.addOption("Turn 90", new AutonomousTurn(driveTrain, 0.3, 90));
     autoChooser.addOption("Shoot", new AutoShootOutCommandGroup(shooter, intake, 1));
 
     // autoChooser.addOption("Do Nothing");
