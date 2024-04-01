@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.commands.AutonomousDriveDistance;
 import frc.robot.commands.AutonomousDriveForwardTimed;
+import frc.robot.commands.AutonomousGenericAmpScore;
 import frc.robot.commands.AutonomousRedAmpScore;
 import frc.robot.commands.AutonomousTurn;
 import frc.robot.commands.DriveManualCommand;
@@ -18,6 +19,7 @@ import frc.robot.commands.ShooterReverseCommand;
 
 import static frc.robot.Constants.Controllers.*;
 
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -52,6 +54,7 @@ public class RobotContainer {
   private final DriveTrain driveTrain = new DriveTrain();
   private final Intake intake = new Intake();
   private final Shooter shooter = new Shooter();
+  private final Climber climber = new Climber();
   // TODO: Add climber
 
   // TODO: Add Limelight
@@ -125,21 +128,17 @@ public class RobotContainer {
     controlsTab.add(intake);
     controlsTab.add(shooter);
 
-    setupDriverTab();
     setupAutonomousTab();
 
   }
 
-  private void setupDriverTab() {
-    // TODO: Add stuff like game time, camera stream, etc
-
-  }
 
   private void setupAutonomousTab() {
     autoChooser = new SendableChooser<>();
     SendableRegistry.setName(autoChooser, "Autonomous Command");
     autoChooser.addOption("Drive Forward Timed", new AutonomousDriveForwardTimed(driveTrain, 3, 0, 0.5,0));
-    autoChooser.addOption("Red Amp Score", new AutonomousRedAmpScore(driveTrain, shooter, intake));
+    autoChooser.addOption("Red Amp Score", new AutonomousGenericAmpScore(driveTrain, shooter, intake, 1));
+    autoChooser.addOption("Blue Amp Score", new AutonomousGenericAmpScore(driveTrain, shooter, intake, -1));
     autoChooser.addOption("Drive distance", new AutonomousDriveDistance(driveTrain, 0, 0.2, 3));
     autoChooser.addOption("Turn 90", new AutonomousTurn(driveTrain, 0.3, 90));
     autoChooser.addOption("Shoot", new AutoShootOutCommandGroup(shooter, intake, 1));

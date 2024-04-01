@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix6.hardware.TalonFX;
 
@@ -20,6 +21,12 @@ public class Climber extends SubsystemBase {
 
   //
   List<TalonSRX> motors = List.of(leftClimber, rightClimber);
+  }
+
+  public void climb(int direction){
+    leftClimber.set(TalonSRXControlMode.PercentOutput, direction * 0.85);
+    rightClimber.set(TalonSRXControlMode.PercentOutput, -direction * 0);
+    //System.out.println("Shooter:");
   }
 
   @Override
