@@ -9,6 +9,8 @@ import frc.robot.commands.AutonomousDriveForwardTimed;
 import frc.robot.commands.AutonomousGenericAmpScore;
 import frc.robot.commands.AutonomousRedAmpScore;
 import frc.robot.commands.AutonomousTurn;
+import frc.robot.commands.ClimberDown;
+import frc.robot.commands.ClimberUp;
 import frc.robot.commands.DriveManualCommand;
 import frc.robot.commands.IntakeInCommand;
 import frc.robot.commands.IntakeOutCommand;
@@ -72,6 +74,8 @@ public class RobotContainer {
   private final IntakeOutCommand intakeOutCommand = new IntakeOutCommand(intake);
   private final ShootOutCommandGroup shootCommand = new ShootOutCommandGroup(shooter, intake);
   private final ShooterReverseCommand shooterReverseCommand = new ShooterReverseCommand(shooter);
+  private final ClimberUp climbUp = new ClimberUp(climber);
+  private final ClimberDown climbDown = new ClimberDown(climber);
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   // private final CommandXboxController m_driverController =
@@ -104,9 +108,6 @@ public class RobotContainer {
     new JoystickButton(controller, Button.kY.value)
         .whileTrue(intakeOutCommand);
 
-    new JoystickButton(joystick, 5)
-        .whileTrue(intakeOutCommand);
-
     // UsbCamera camera = new UsbCamera("USB Camera 0", 0);
 
     // Shooter
@@ -118,8 +119,13 @@ public class RobotContainer {
     new JoystickButton(controller, Button.kA.value)
         .whileTrue(shooterReverseCommand);
 
-    // Climber
-    // TODO: Add commands
+    // Climber up
+    new JoystickButton(joystick, 5)
+        .whileTrue(climbUp);
+
+    // Climber down
+    new JoystickButton(joystick, 3)
+        .whileTrue(climbDown);
 
   }
 
@@ -132,11 +138,10 @@ public class RobotContainer {
 
   }
 
-
   private void setupAutonomousTab() {
     autoChooser = new SendableChooser<>();
     SendableRegistry.setName(autoChooser, "Autonomous Command");
-    autoChooser.addOption("Drive Forward Timed", new AutonomousDriveForwardTimed(driveTrain, 3, 0, 0.5,0));
+    autoChooser.addOption("Drive Forward Timed", new AutonomousDriveForwardTimed(driveTrain, 3, 0, 0.5, 0));
     autoChooser.addOption("Red Amp Score", new AutonomousGenericAmpScore(driveTrain, shooter, intake, 1));
     autoChooser.addOption("Blue Amp Score", new AutonomousGenericAmpScore(driveTrain, shooter, intake, -1));
     autoChooser.addOption("Drive distance", new AutonomousDriveDistance(driveTrain, 0, 0.2, 3));

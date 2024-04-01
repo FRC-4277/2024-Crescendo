@@ -14,19 +14,31 @@ import static frc.robot.Constants.ClimberConstants.*;
 import java.util.List;
 
 public class Climber extends SubsystemBase {
-  private final TalonSRX leftClimber = new TalonSRX(LEFT_CLIMBER);
-  private final TalonSRX rightClimber = new TalonSRX(RIGHT_CLIMBER);
+  private final TalonFX leftClimber = new TalonFX(LEFT_CLIMBER);
+  private final TalonFX rightClimber = new TalonFX(RIGHT_CLIMBER);
+
   /** Creates a new Climber. */
   public Climber() {
-
-  //
-  List<TalonSRX> motors = List.of(leftClimber, rightClimber);
   }
 
-  public void climb(int direction){
-    leftClimber.set(TalonSRXControlMode.PercentOutput, direction * 0.85);
-    rightClimber.set(TalonSRXControlMode.PercentOutput, -direction * 0);
-    //System.out.println("Shooter:");
+  public void up() {
+    move(-1, 0.3);
+  }
+
+  public void down() {
+    move(1, 0.3);
+  }
+
+  public void move(double direction, double speed) {
+    leftClimber.set(direction * speed);
+    rightClimber.set(direction * speed);
+    // System.out.println("Shooter:");
+  }
+
+  public void stop() {
+    leftClimber.set(0);
+    rightClimber.set(0);
+    // System.out.println("Shooter:");
   }
 
   @Override

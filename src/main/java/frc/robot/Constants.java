@@ -40,8 +40,8 @@ public final class Constants {
       }
 
     public static class ClimberConstants {
-      public static final int LEFT_CLIMBER = 61;
-      public static final int RIGHT_CLIMBER = 22;
+      public static final int LEFT_CLIMBER = 8;
+      public static final int RIGHT_CLIMBER = 7;
     }
     
     public static class ShuffleboardConstants {
